@@ -104,6 +104,7 @@ class Library:
         new_book = Book(book_id=new_id, title=title, author=author, year=year)
         self.books.append(new_book)
         self.save_books()
+        log_event(f"Книга '{title}' добавлена с id {new_id}.")  # Логирование
         print(f"Книга '{title}' добавлена с id {new_id}.")
 
     def delete_book(self, book_id: int) -> None:
@@ -112,9 +113,12 @@ class Library:
         if book:
             self.books.remove(book)
             self.save_books()
-            log_event(f"Книга с id {book_id} удалена.")
+            log_event(f"Книга с id {book_id} удалена.")  # Логирование
         else:
             print(colored(f"Книга с id {book_id} не найдена.", "red"))
+            log_event(
+                f"Попытка удалить книгу с id {book_id}, но она не найдена."
+            )  # Логирование ошибки
 
     def find_book_by_id(self, book_id: int) -> Optional[Book]:
         """Ищет книгу по id."""
@@ -151,11 +155,17 @@ class Library:
                 new_status = "выдана" if book.status == "в наличии" else "в наличии"
                 book.status = new_status
                 self.save_books()
-                log_event(f"Статус книги с id {book_id} изменен на '{new_status}'.")
+                log_event(
+                    f"Статус книги с id {book_id} изменен на '{new_status}'."
+                )  # Логирование
             else:
                 print(colored("Статус книги не изменен.", "yellow"))
+                log_event(f"Статус книги с id {book_id} не был изменен.")  # Логирование
         else:
             print(colored(f"Книга с id {book_id} не найдена.", "red"))
+            log_event(
+                f"Попытка изменить статус книги с id {book_id}, но книга не найдена."
+            )  # Логирование ошибки
 
 
 def main() -> None:
