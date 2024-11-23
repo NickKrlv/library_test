@@ -105,7 +105,6 @@ class Library:
         self.books.append(new_book)
         self.save_books()
         log_event(f"Книга '{title}' добавлена с id {new_id}.")  # Логирование
-        print(f"Книга '{title}' добавлена с id {new_id}.")
 
     def delete_book(self, book_id: int) -> None:
         """Удаляет книгу по id."""
